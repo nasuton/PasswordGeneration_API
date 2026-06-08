@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: password-generation-api
+    runtime: go
+    buildCommand: go build -o server .
+    startCommand: ./server
+    envVars:
+      - key: GIN_MODE
+        value: release
