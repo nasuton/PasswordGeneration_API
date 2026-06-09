@@ -7,6 +7,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,11 +19,11 @@ const (
 )
 
 type GenerateRequest struct {
-	Length      int  `json:"length" form:"length"`
-	UseLower    bool `json:"use_lower" form:"use_lower"`
-	UseUpper    bool `json:"use_upper" form:"use_upper"`
-	UseDigits   bool `json:"use_digits" form:"use_digits"`
-	UseSymbols  bool `json:"use_symbols" form:"use_symbols"`
+	Length     int  `json:"length" form:"length"`
+	UseLower   bool `json:"use_lower" form:"use_lower"`
+	UseUpper   bool `json:"use_upper" form:"use_upper"`
+	UseDigits  bool `json:"use_digits" form:"use_digits"`
+	UseSymbols bool `json:"use_symbols" form:"use_symbols"`
 }
 
 type GenerateResponse struct {
@@ -110,6 +111,13 @@ func handleGenerate(c *gin.Context) {
 
 func main() {
 	r := gin.Default()
+
+	r.Use(cors.New(cors.Config{
+		AllowOrigins: []string{
+			"https://nasuton.github.io", // GitHub Pages のオリジン
+		},
+		AllowMethods: []string{"GET"},
+	}))
 
 	r.GET("/generate", handleGenerate)
 	r.POST("/generate", handleGenerate)
